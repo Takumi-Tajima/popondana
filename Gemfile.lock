@@ -1,10 +1,10 @@
 GIT
   remote: https://github.com/SonicGarden/sgcop.git
-  revision: dbb14de6eba829e8774b70b8b3e9db8eac43ebf2
+  revision: 02ec63b4805219cdf4783088a5f06d368d7f5739
   branch: main
   specs:
-    sgcop (1.2.9)
-      rubocop (~> 1.76.0)
+    sgcop (1.2.10)
+      rubocop (~> 1.77.0)
       rubocop-capybara (~> 2.22.0)
       rubocop-factory_bot (~> 2.27.0)
       rubocop-performance (~> 1.25.0)
@@ -269,7 +269,7 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
-    rubocop (1.76.2)
+    rubocop (1.77.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
