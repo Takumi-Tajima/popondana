@@ -1,0 +1,14 @@
+%h1 Popondanaへようこそ
+
+- if logged_in?
+  .alert.alert-success
+    %h4 ログイン中
+    %p #{current_user.name}さん、こんにちは！
+    %p メールアドレス: #{current_user.email}
+- else
+  .jumbotron.bg-light.p-5.rounded
+    %h2 ログインして始めましょう
+    %p Googleアカウントでかんたんログイン
+    = link_to "/auth/google_oauth2", method: :post, class: "btn btn-primary btn-lg" do
+      %i.bi.bi-google.me-2
+      Googleでログイン
