@@ -15,4 +15,20 @@
     = stylesheet_link_tag :app, 'data-turbo-track': 'reload'
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', type: 'module'
   %body
-    = yield
+    %header.navbar.navbar-expand-lg.navbar-light.bg-light.mb-4
+      .container
+        = link_to "Popondana", root_path, class: "navbar-brand"
+        
+        .navbar-nav.ms-auto
+          - if logged_in?
+            %span.navbar-text.me-3
+              こんにちは、#{current_user.name}さん
+            = link_to "ログアウト", logout_path, method: :delete, class: "btn btn-outline-secondary btn-sm"
+          - else
+            = link_to "/auth/google_oauth2", method: :post, class: "btn btn-primary" do
+              %i.bi.bi-google.me-2
+              Googleでログイン
+
+    %main.container
+      = render 'shared/flash_messages'
+      = yield
