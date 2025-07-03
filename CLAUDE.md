@@ -103,5 +103,35 @@ docker build -t popondana .
 - HAML-lint for template consistency
 - Brakeman for security scanning
 
+## Book Management App Features
+
+### Technology Stack
+- **Book API**: Rakuten Books API for book information retrieval
+- **Authentication**: Google OAuth 2.0
+- **Frontend**: Bootstrap 5 with Stimulus controllers
+- **Charts**: Chart.js for statistics visualization
+
+### Database Schema
+- **User**: Google OAuth user information
+- **Book**: Book details from Rakuten API (ISBN, title, author, etc.)
+- **Ownership**: User-book relationship with owned_at timestamp
+- **Category**: User-defined categories for organizing books
+- **UserCategory**: Many-to-many relationship between users and categories
+- **OwnershipCategory**: Many-to-many relationship between ownerships and categories
+
+### Key Features
+1. **Book Search**: Search books using Rakuten Books API by title
+2. **Book Ownership**: Users can mark books as owned with custom categories
+3. **Category Management**: Users can create and assign multiple categories to books
+4. **User Statistics**: Monthly registration charts and category-based statistics
+5. **User Browsing**: View other users' book collections and statistics
+6. **Search Filters**: Filter by date range and categories
+
+### API Configuration
+To use the Rakuten Books API, set your application ID in the environment:
+```
+RAKUTEN_APPLICATION_ID=your_rakuten_application_id_here
+```
+
 ### Current Branch Context
-Working on `google-login` branch - implementing Google OAuth authentication feature.
+Working on `book-management-app` branch - completed full book management application implementation.

@@ -1,14 +1,77 @@
-%h1 Popondanaへようこそ
+.container.mt-4
+  %h1.text-center.mb-5 Popondana - 本の管理アプリ
 
-- if logged_in?
-  .alert.alert-success
-    %h4 ログイン中
-    %p #{current_user.name}さん、こんにちは！
-    %p メールアドレス: #{current_user.email}
-- else
-  .jumbotron.bg-light.p-5.rounded
-    %h2 ログインして始めましょう
-    %p Googleアカウントでかんたんログイン
-    = link_to "/auth/google_oauth2", method: :post, class: "btn btn-primary btn-lg" do
-      %i.bi.bi-google.me-2
-      Googleでログイン
+  - if logged_in?
+    .alert.alert-success
+      %h4 ログイン中
+      %p #{current_user.name}さん、こんにちは！
+      
+    .row.g-4
+      .col-md-4
+        .card.h-100
+          .card-body.text-center
+            %i.bi.bi-search.display-4.text-primary.mb-3
+            %h5.card-title 書籍検索
+            %p.card-text 楽天ブックスAPIで書籍を検索し、自分のライブラリに追加
+            = link_to '書籍検索', search_books_path, class: 'btn btn-primary'
+      
+      .col-md-4
+        .card.h-100
+          .card-body.text-center
+            %i.bi.bi-book.display-4.text-success.mb-3
+            %h5.card-title 所有本管理
+            %p.card-text 自分が所有している本をカテゴリ別に管理できます
+            = link_to '所有本一覧', books_path, class: 'btn btn-success'
+      
+      .col-md-4
+        .card.h-100
+          .card-body.text-center
+            %i.bi.bi-people.display-4.text-info.mb-3
+            %h5.card-title ユーザー一覧
+            %p.card-text 他のユーザーの本コレクションを閲覧できます
+            = link_to 'ユーザー一覧', users_path, class: 'btn btn-info'
+  - else
+    .jumbotron.bg-light.p-5.rounded.mb-5
+      %h2.text-center ログインして始めましょう
+      %p.text-center.lead Googleアカウントでかんたんログイン
+      .text-center
+        = link_to "/auth/google_oauth2", method: :post, class: "btn btn-primary btn-lg" do
+          %i.bi.bi-google.me-2
+          Googleでログイン
+    
+    .row.g-4
+      .col-md-6
+        .card
+          .card-body
+            %h5.card-title 書籍検索機能
+            %ul
+              %li 楽天ブックスAPIで書籍情報を取得
+              %li タイトルで書籍を検索
+              %li ワンクリックで所有登録
+      
+      .col-md-6
+        .card
+          .card-body
+            %h5.card-title カテゴリ管理
+            %ul
+              %li 自由なカテゴリ作成
+              %li 本ごとに複数カテゴリ設定
+              %li カテゴリ別絞り込み
+      
+      .col-md-6
+        .card
+          .card-body
+            %h5.card-title 統計機能
+            %ul
+              %li 月別登録数グラフ
+              %li カテゴリ別本数統計
+              %li 期間指定での絞り込み
+      
+      .col-md-6
+        .card
+          .card-body
+            %h5.card-title コミュニティ機能
+            %ul
+              %li ユーザー一覧表示
+              %li 他ユーザーの本コレクション閲覧
+              %li ユーザー別統計情報

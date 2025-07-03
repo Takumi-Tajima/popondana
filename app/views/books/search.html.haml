@@ -1,0 +1,38 @@
+.container.mt-4{data: {controller: "book-ownership"}}
+  %h1.mb-4 書籍検索
+  
+  = form_with url: search_books_path, method: :get, local: true, class: 'mb-4' do |f|
+    .row.g-3
+      .col-md-8
+        = f.text_field :query, value: @query, placeholder: '書籍名を入力', class: 'form-control'
+      .col-md-4
+        = f.submit '検索', class: 'btn btn-primary w-100'
+  
+  - if @query.present?
+    - if @results.present?
+      %h2.mb-3 検索結果
+      .row.g-4
+        - @results.each do |book|
+          .col-md-6.col-lg-4
+            .card.h-100
+              - if book[:image_url].present?
+                = image_tag book[:image_url], class: 'card-img-top', style: 'height: 300px; object-fit: contain;'
+              .card-body
+                %h5.card-title= book[:title]
+                %p.card-text
+                  %small.text-muted
+                    = book[:author]
+                    %br
+                    = book[:publisher]
+                    - if book[:published_date]
+                      %br
+                      = book[:published_date].strftime('%Y年%m月%d日')
+              .card-footer
+                - if book[:already_owned]
+                  %button.btn.btn-secondary.w-100{disabled: true} 所有済み
+                - else
+                  %button.btn.btn-primary.w-100.own-book-btn{data: {book: book.to_json}} 持ってる
+    - else
+      .alert.alert-info 検索結果が見つかりませんでした。
+
+= render 'shared/book_ownership_modal'
