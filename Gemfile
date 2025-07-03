@@ -29,3 +29,7 @@ group :development do
   gem 'html2haml'
   gem 'web-console'
 end
+
+gem "httparty", "~> 0.23.1"
+
+gem "dotenv-rails", "~> 3.1", groups: [:development, :test]

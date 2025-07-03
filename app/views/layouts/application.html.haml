@@ -14,17 +14,31 @@
     %link{ href: '/icon.png', rel: 'apple-touch-icon' }/
     = stylesheet_link_tag :app, 'data-turbo-track': 'reload'
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', type: 'module'
+    %script{src: 'https://cdn.jsdelivr.net/npm/chart.js'}
   %body
     %header.navbar.navbar-expand-lg.navbar-light.bg-light.mb-4
       .container
         = link_to "Popondana", root_path, class: "navbar-brand"
         
-        .navbar-nav.ms-auto
-          - if logged_in?
-            %span.navbar-text.me-3
-              こんにちは、#{current_user.name}さん
-            = link_to "ログアウト", logout_path, method: :delete, class: "btn btn-outline-secondary btn-sm"
-          - else
+        - if logged_in?
+          %button.navbar-toggler{type: "button", data: {bs: {toggle: "collapse", target: "#navbarNav"}}, aria: {controls: "navbarNav", expanded: "false", label: "Toggle navigation"}}
+            %span.navbar-toggler-icon
+          
+          #navbarNav.collapse.navbar-collapse
+            %ul.navbar-nav.me-auto
+              %li.nav-item
+                = link_to "書籍一覧", books_path, class: "nav-link"
+              %li.nav-item
+                = link_to "書籍検索", search_books_path, class: "nav-link"
+              %li.nav-item
+                = link_to "ユーザー一覧", users_path, class: "nav-link"
+            
+            .navbar-nav.ms-auto
+              %span.navbar-text.me-3
+                こんにちは、#{current_user.name}さん
+              = link_to "ログアウト", logout_path, method: :delete, class: "btn btn-outline-secondary btn-sm"
+        - else
+          .navbar-nav.ms-auto
             = link_to "/auth/google_oauth2", method: :post, class: "btn btn-primary" do
               %i.bi.bi-google.me-2
               Googleでログイン

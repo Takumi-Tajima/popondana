@@ -1,0 +1,23 @@
+.modal.fade{id: "bookOwnershipModal", tabindex: "-1", data: {"book-ownership-target": "modal"}}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5.modal-title カテゴリを選択
+        %button.btn-close{type: "button", data: {bs: {dismiss: "modal"}}}
+      
+      .modal-body
+        %p.mb-3 この本のカテゴリを選択してください。
+        
+        #categoryList{data: {"book-ownership-target": "categoryList"}}
+        
+        .mt-3
+          .input-group
+            %input.form-control{type: "text", placeholder: "新しいカテゴリを追加", data: {"book-ownership-target": "newCategoryInput"}}
+            %button.btn.btn-outline-secondary{type: "button", data: {action: "click->book-ownership#addNewCategory"}}
+              追加
+      
+      .modal-footer
+        %button.btn.btn-secondary{type: "button", data: {bs: {dismiss: "modal"}}}
+          キャンセル
+        %button.btn.btn-primary{type: "button", data: {action: "click->book-ownership#save"}}
+          保存
