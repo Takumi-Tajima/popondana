@@ -135,4 +135,33 @@ export default class extends Controller {
       alert('保存に失敗しました。')
     }
   }
+
+  async deleteCategory(event) {
+    const categoryName = event.currentTarget.dataset.categoryName
+    
+    if (!confirm(`カテゴリ「${categoryName}」を削除してもよろしいですか？\n\n※このカテゴリは全ての書籍から削除されます。`)) {
+      return
+    }
+    
+    try {
+      const response = await fetch(`/api/categories/${encodeURIComponent(categoryName)}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+        }
+      })
+      
+      const result = await response.json()
+      
+      if (result.status === 'success') {
+        // ページをリロード
+        window.location.reload()
+      } else {
+        alert('カテゴリの削除に失敗しました')
+      }
+    } catch (error) {
+      console.error('カテゴリの削除に失敗しました:', error)
+      alert('カテゴリの削除に失敗しました')
+    }
+  }
 }

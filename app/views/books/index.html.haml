@@ -1,14 +1,19 @@
-.container.mt-4
+.container.mt-4{data: {controller: "category-edit"}}
   .d-flex.justify-content-between.align-items-center.mb-4
     %h1.fs-2 所有書籍一覧
     = link_to '書籍を検索', search_books_path, class: 'btn btn-primary'
 
   - if @books_by_category.present?
     - @books_by_category.each do |category_name, ownerships|
-      .category-section
-        .category-header
-          %h3= category_name
-          %div.book-count #{ownerships.count}冊
+      .category-section.mb-4
+        .category-header.d-flex.justify-content-between.align-items-center.mb-3.p-3.bg-light.rounded
+          .category-info
+            %h3.mb-1= category_name
+            %div.book-count.text-muted #{ownerships.count}冊
+          - if category_name != "未分類"
+            %button.btn.btn-sm.btn-outline-danger{data: {action: "click->category-edit#deleteCategory", category_name: category_name}}
+              %i.fas.fa-trash-alt.me-1
+              削除
         .row.g-3
           - ownerships.each do |ownership|
             .col-md-6.col-lg-4
@@ -26,5 +31,11 @@
                     .mt-2
                       - ownership.categories.each do |category|
                         %span.badge.bg-secondary.me-1= category.name
+                  .mt-2
+                    %button.btn.btn-sm.btn-outline-primary{data: {action: "click->category-edit#openModal", ownership_id: ownership.id}}
+                      %i.fas.fa-edit.me-1
+                      カテゴリ編集
   - else
     .alert.alert-info まだ書籍を登録していません。
+
+  = render 'shared/category_edit_modal'

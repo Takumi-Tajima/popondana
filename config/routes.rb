@@ -25,6 +25,6 @@ Rails.application.routes.draw do
   
   # API
   namespace :api do
-    resources :categories, only: [:index]
+    resources :categories, only: [:index, :destroy]
   end
 end
