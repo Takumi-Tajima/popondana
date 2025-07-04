@@ -1,0 +1,18 @@
+.modal.fade{id: "categoryEditModal", tabindex: "-1", data: {"category-edit-target": "modal"}}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5.modal-title カテゴリを編集
+        %button.btn-close{type: "button", data: {bs: {dismiss: "modal"}}}
+      
+      .modal-body
+        %p.mb-3 この本のカテゴリを編集してください。
+        
+        %select{multiple: true, data: {"category-edit-target": "categorySelect"}}
+          / オプションはJavaScriptで動的に追加されます
+      
+      .modal-footer
+        %button.btn.btn-secondary{type: "button", data: {bs: {dismiss: "modal"}}}
+          キャンセル
+        %button.btn.btn-primary{type: "button", data: {action: "click->category-edit#save"}}
+          保存

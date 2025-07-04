@@ -3,13 +3,13 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def index
-    @users = User.includes(:ownerships, :categories)
+    @users = User.includes(ownerships: :categories)
     @categories = Category.order(:name)
     
     # 検索フィルタを適用
     @users = apply_search_filters(@users)
     
-    # カテゴリーごとの本の数を計算
+    # カテゴリーごとの本の数を計算し、所有数でソート
     @user_stats = @users.map do |user|
       category_counts = user.ownerships
         .joins(:categories)
@@ -23,12 +23,17 @@ class UsersController < ApplicationController
         total_books: user.ownerships.count,
         top_categories: category_counts
       }
+    end.sort_by { |stat| -stat[:total_books] }
+    
+    # ランキングを追加
+    @user_stats.each_with_index do |stat, index|
+      stat[:rank] = index + 1
     end
   end
 
   def show
     @ownerships = @user.ownerships.includes(:book, :categories)
-    @categories = @user.categories.order(:name)
+    @categories = Category.joins(ownerships: :user).where(users: { id: @user.id }).distinct.order(:name)
     
     # 検索フィルタを適用
     @ownerships = apply_ownership_filters(@ownerships)
@@ -113,7 +118,7 @@ class UsersController < ApplicationController
   def apply_ownership_filters(ownerships)
     # カテゴリで絞り込み
     if params[:category_filter].present?
-      category = @user.categories.find(params[:category_filter])
+      category = Category.find(params[:category_filter])
       ownerships = ownerships.joins(:categories).where(categories: { id: category.id })
     end
     

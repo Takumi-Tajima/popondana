@@ -25,12 +25,22 @@
       %table.table.table-hover
         %thead
           %tr
+            %th ランキング
             %th ユーザー
             %th.text-center 所有本数
             %th 上位5カテゴリ
         %tbody
           - @user_stats.each do |stat|
-            %tr
+            %tr{class: ("table-warning" if stat[:rank] <= 3)}
+              %td.text-center
+                - if stat[:rank] == 1
+                  %span.ranking-crown.fs-4
+                    %i.fas.fa-crown
+                  %span.fw-bold.text-warning.ms-1= "#{stat[:rank]}位"
+                - elsif stat[:rank] <= 3
+                  %span.fw-bold.fs-5= "#{stat[:rank]}位"
+                - else
+                  %span= "#{stat[:rank]}位"
               %td
                 = link_to user_path(stat[:user]), class: 'text-decoration-none' do
                   .d-flex.align-items-center

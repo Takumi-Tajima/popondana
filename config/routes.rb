@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
   
   # 所有
-  resources :ownerships, only: [:create, :destroy] do
+  resources :ownerships, only: [:show, :create, :destroy] do
     member do
       patch 'update_categories'
     end

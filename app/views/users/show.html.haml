@@ -1,22 +1,22 @@
-.container.mt-4
+.container.mt-4{data: {controller: "category-edit"}}
   .row
     .col-md-8
       %h1.mb-4
         = @user.name
         %small.text-muted.ms-2 (所有本数: #{@ownerships.count}冊)
-      
+
       - if @books_by_category.present?
         - @books_by_category.each do |category_name, ownerships|
-          .mb-5
-            %h3.mb-3
-              %span.badge.bg-primary.me-2= category_name
-              %small.text-muted #{ownerships.count}冊
+          .category-section.mb-3
+            .category-header
+              %h3.fs-4= category_name
+              %div.book-count #{ownerships.count}冊
             .row.g-3
               - ownerships.each do |ownership|
                 .col-md-6.col-lg-4
                   .card.h-100
                     - if ownership.book.image_url.present?
-                      = image_tag ownership.book.image_url, class: 'card-img-top', style: 'height: 200px; object-fit: contain;'
+                      = image_tag ownership.book.image_url, class: 'card-img-top', style: 'height: 180px; object-fit: contain;'
                     .card-body
                       %h6.card-title= ownership.book.title
                       %p.card-text
@@ -27,23 +27,23 @@
                     - if current_user == @user
                       .card-footer
                         .d-flex.justify-content-between
-                          %button.btn.btn-sm.btn-outline-primary.edit-categories-btn{data: {ownership: {id: ownership.id}}}
+                          %button.btn.btn-sm.btn-outline-primary.edit-categories-btn{data: {ownership_id: ownership.id, action: "click->category-edit#openModal"}}
                             カテゴリ編集
-                          = link_to '削除', ownership_path(ownership), method: :delete, 
-                            confirm: '本当に削除しますか？', 
+                          = link_to '削除', ownership_path(ownership),
+                            data: { 'turbo-method': :delete, 'turbo-confirm': '本当に削除しますか？' },
                             class: 'btn btn-sm btn-outline-danger'
       - else
         .alert.alert-info まだ書籍を登録していません。
-    
+
     .col-md-4
       .card
         .card-header
           %h5 月別登録数グラフ
         .card-body
-          %canvas#booksChart{width: "400", height: "200"}
+          %canvas#booksChart{width: "400", height: "200", data: {chart: @chart_data.to_json}}
           - if params[:category_filter].present? || params[:start_date_filter].present? || params[:end_date_filter].present?
             %p.text-muted.mt-2 *絞り込み条件でのグラフ表示
-      
+
       .card.mt-3
         .card-header
           %h5 カテゴリ別統計
@@ -57,38 +57,45 @@
           - else
             %p.text-muted カテゴリなし
 
-:javascript
-  document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('booksChart').getContext('2d');
-    const chartData = #{@chart_data.to_json.html_safe};
-    
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: chartData.labels,
-        datasets: [{
-          label: '登録本数',
-          data: chartData.data,
-          borderColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1
-            }
-          }
-        }
-      }
-    });
-  });
+-# %script
+-#   document.addEventListener('DOMContentLoaded', function() {
+-#     const canvas = document.getElementById('booksChart');
+-#     if (canvas && canvas.dataset.chart) {
+-#       try {
+-#         const chartData = JSON.parse(canvas.dataset.chart);
+-#         new Chart(canvas, {
+-#           type: 'line',
+-#           data: {
+-#             labels: chartData.labels,
+-#             datasets: [{
+-#               label: '登録本数',
+-#               data: chartData.data,
+-#               borderColor: 'rgb(75, 192, 192)',
+-#               backgroundColor: 'rgba(75, 192, 192, 0.2)',
+-#               tension: 0.1
+-#             }]
+-#           },
+-#           options: {
+-#             responsive: true,
+-#             plugins: {
+-#               legend: {
+-#                 display: false
+-#               }
+-#             },
+-#             scales: {
+-#               y: {
+-#                 beginAtZero: true,
+-#                 ticks: {
+-#                   stepSize: 1
+-#                 }
+-#               }
+-#             }
+-#           }
+-#         });
+-#       } catch (error) {
+-#         console.error('Chart initialization failed:', error);
+-#       }
+-#     }
+-#   });
+
+= render 'shared/category_edit_modal'

@@ -8,13 +8,8 @@
       .modal-body
         %p.mb-3 この本のカテゴリを選択してください。
         
-        #categoryList{data: {"book-ownership-target": "categoryList"}}
-        
-        .mt-3
-          .input-group
-            %input.form-control{type: "text", placeholder: "新しいカテゴリを追加", data: {"book-ownership-target": "newCategoryInput"}}
-            %button.btn.btn-outline-secondary{type: "button", data: {action: "click->book-ownership#addNewCategory"}}
-              追加
+        %select{multiple: true, data: {"book-ownership-target": "categorySelect"}}
+          / オプションはJavaScriptで動的に追加されます
       
       .modal-footer
         %button.btn.btn-secondary{type: "button", data: {bs: {dismiss: "modal"}}}

@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   has_many :ownerships, dependent: :destroy
   has_many :books, through: :ownerships
-  has_many :categories, -> { distinct }, through: :ownerships
 
   validates :name, presence: true
   validates :provider, presence: true

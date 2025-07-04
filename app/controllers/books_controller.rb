@@ -2,7 +2,21 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @books = current_user.books.includes(:categories)
+    @ownerships = current_user.ownerships.includes(:book, :categories)
+    
+    # カテゴリーごとにグループ化
+    @books_by_category = {}
+    @ownerships.each do |ownership|
+      if ownership.categories.empty?
+        @books_by_category["未分類"] ||= []
+        @books_by_category["未分類"] << ownership
+      else
+        ownership.categories.each do |category|
+          @books_by_category[category.name] ||= []
+          @books_by_category[category.name] << ownership
+        end
+      end
+    end
   end
 
   def search

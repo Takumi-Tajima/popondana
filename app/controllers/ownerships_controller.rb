@@ -1,6 +1,13 @@
 class OwnershipsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_ownership, only: [:destroy, :update_categories]
+  before_action :set_ownership, only: [:show, :destroy, :update_categories]
+
+  def show
+    render json: { 
+      ownership_id: @ownership.id, 
+      category_ids: @ownership.categories.pluck(:id) 
+    }
+  end
 
   def create
     book_data = JSON.parse(params[:book_data])

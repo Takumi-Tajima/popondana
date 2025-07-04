@@ -16,14 +16,12 @@
           .col-md-6.col-lg-4
             .card.h-100
               - if book[:image_url].present?
-                = image_tag book[:image_url], class: 'card-img-top', style: 'height: 300px; object-fit: contain;'
+                = image_tag book[:image_url], class: 'card-img-top', style: 'height: 220px; object-fit: contain;'
               .card-body
-                %h5.card-title= book[:title]
+                %h6.card-title= book[:title]
                 %p.card-text
                   %small.text-muted
                     = book[:author]
-                    %br
-                    = book[:publisher]
                     - if book[:published_date]
                       %br
                       = book[:published_date].strftime('%Y年%m月%d日')
@@ -31,8 +29,8 @@
                 - if book[:already_owned]
                   %button.btn.btn-secondary.w-100{disabled: true} 所有済み
                 - else
-                  %button.btn.btn-primary.w-100.own-book-btn{data: {book: book.to_json}} 持ってる
+                  %button.btn.btn-primary.w-100.own-book-btn{data: {book: book.to_json, action: "click->book-ownership#openModal"}} 持ってる
     - else
       .alert.alert-info 検索結果が見つかりませんでした。
 
-= render 'shared/book_ownership_modal'
+  = render 'shared/book_ownership_modal'

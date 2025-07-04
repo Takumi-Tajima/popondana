@@ -40,3 +40,8 @@
 
 # Ignore database files.
 database.yml
+
+/.env.development
+/.env.test
+/.env.production
+/.env

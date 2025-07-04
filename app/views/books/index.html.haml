@@ -1,28 +1,30 @@
 .container.mt-4
   .d-flex.justify-content-between.align-items-center.mb-4
-    %h1 我が書籍
+    %h1.fs-2 所有書籍一覧
     = link_to '書籍を検索', search_books_path, class: 'btn btn-primary'
-  
-  - if @books.present?
-    .row.g-4
-      - @books.each do |book|
-        .col-md-6.col-lg-4
-          .card.h-100
-            - if book.image_url.present?
-              = image_tag book.image_url, class: 'card-img-top', style: 'height: 300px; object-fit: contain;'
-            .card-body
-              %h5.card-title= book.title
-              %p.card-text
-                %small.text-muted
-                  = book.author
-                  %br
-                  = book.publisher
-                  - if book.published_date
-                    %br
-                    = book.published_date.strftime('%Y年%m月%d日')
-              - if book.categories.any?
-                .mt-2
-                  - book.categories.each do |category|
-                    %span.badge.bg-secondary.me-1= category.name
+
+  - if @books_by_category.present?
+    - @books_by_category.each do |category_name, ownerships|
+      .category-section
+        .category-header
+          %h3= category_name
+          %div.book-count #{ownerships.count}冊
+        .row.g-3
+          - ownerships.each do |ownership|
+            .col-md-6.col-lg-4
+              .card.h-100
+                - if ownership.book.image_url.present?
+                  = image_tag ownership.book.image_url, class: 'card-img-top', style: 'height: 250px; object-fit: contain;'
+                .card-body
+                  %h6.card-title= ownership.book.title
+                  %p.card-text
+                    %small.text-muted
+                      = ownership.book.author
+                      %br
+                      所有日: #{ownership.owned_at.strftime('%Y年%m月%d日')}
+                  - if ownership.categories.any?
+                    .mt-2
+                      - ownership.categories.each do |category|
+                        %span.badge.bg-secondary.me-1= category.name
   - else
     .alert.alert-info まだ書籍を登録していません。
